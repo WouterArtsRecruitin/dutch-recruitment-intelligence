@@ -1,6 +1,6 @@
 {
   "name": "dutch-recruitment-intelligence",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Nederlandse Recruitment Intelligence Webhook Server",
   "main": "zapier-webhook-server.cjs",
   "scripts": {
