@@ -2,9 +2,9 @@
   "name": "dutch-recruitment-intelligence",
   "version": "1.0.0",
   "description": "Nederlandse Recruitment Intelligence Webhook Server",
-  "main": "zapier-webhook-server.cjs",
+  "main": "zapier-simple-webhook.cjs",
   "scripts": {
-    "start": "node zapier-webhook-server.cjs",
+    "start": "node zapier-simple-webhook.cjs",
     "dev": "node zapier-webhook-server.cjs 3000",
     "test": "node zapier-deployment.cjs test",
     "health": "curl -f http://localhost:$PORT/status || exit 1"
