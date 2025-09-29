@@ -1,0 +1,41 @@
+{
+  "app": "vacature-research",
+  "type": "market-scan",
+  "timestamp": "2025-09-28T09:35:22.562Z",
+  "data": {
+    "role": "DevOps Engineer",
+    "location": "Netherlands",
+    "data": {
+      "total_vacancies": 198,
+      "activity_level": "Medium",
+      "avg_posting_age": 14,
+      "top_skills": [
+        {
+          "name": "Kubernetes",
+          "frequency": 71
+        },
+        {
+          "name": "AWS",
+          "frequency": 71
+        },
+        {
+          "name": "Git",
+          "frequency": 66
+        },
+        {
+          "name": "JavaScript",
+          "frequency": 58
+        },
+        {
+          "name": "Docker",
+          "frequency": 51
+        },
+        {
+          "name": "Python",
+          "frequency": 46
+        }
+      ],
+      "remote_percentage": 62
+    }
+  }
+}

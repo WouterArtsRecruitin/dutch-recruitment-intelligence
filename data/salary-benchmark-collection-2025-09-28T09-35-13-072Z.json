@@ -1,0 +1,18 @@
+{
+  "app": "salary-benchmark",
+  "type": "collection",
+  "timestamp": "2025-09-28T09:35:13.073Z",
+  "data": {
+    "role": "Software Engineer",
+    "industry": "Technology",
+    "location": "Netherlands",
+    "data": {
+      "average": 78000,
+      "min": 54600,
+      "max": 101400,
+      "trend": "Stable",
+      "samples": 169,
+      "confidence": 84
+    }
+  }
+}

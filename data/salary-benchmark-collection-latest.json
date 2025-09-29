@@ -1,0 +1,18 @@
+{
+  "app": "salary-benchmark",
+  "type": "collection",
+  "timestamp": "2025-09-28T09:36:03.610Z",
+  "data": {
+    "role": "DevOps Engineer",
+    "industry": "Technology",
+    "location": "Netherlands",
+    "data": {
+      "average": 86400,
+      "min": 64800,
+      "max": 108000,
+      "trend": "Stable",
+      "samples": 152,
+      "confidence": 97
+    }
+  }
+}

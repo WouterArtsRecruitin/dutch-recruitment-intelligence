@@ -1,0 +1,176 @@
+{
+  "name": "Nederlandse Recruitment Intelligence",
+  "description": "Complete automation suite voor Nederlandse recruitment nieuws, Google Sheets en LinkedIn content",
+  "version": "1.0.0",
+  "webhookBaseUrl": "https://your-app.herokuapp.com",
+  "zaps": [
+    {
+      "name": "Nederlandse Recruitment Nieuws - Dagelijkse Verzameling",
+      "description": "Verzamelt dagelijks Nederlandse recruitment nieuws en upload naar Google Sheets",
+      "trigger": {
+        "app": "schedule",
+        "event": "every_day",
+        "config": {
+          "time": "09:00",
+          "timezone": "Europe/Amsterdam"
+        }
+      },
+      "actions": [
+        {
+          "app": "webhook",
+          "event": "post",
+          "config": {
+            "url": "https://your-app.herokuapp.com/daily-news-collection",
+            "method": "POST",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          }
+        },
+        {
+          "app": "google-sheets",
+          "event": "create_multiple_spreadsheet_rows",
+          "config": {
+            "drive": "my_drive",
+            "spreadsheet_id": "{{google_sheet_id}}",
+            "worksheet": "Sheet1",
+            "values": {
+              "A": "{{step_1.topArticles__0__date}}",
+              "B": "{{step_1.topArticles__0__title}}",
+              "C": "{{step_1.topArticles__0__source}}",
+              "D": "{{step_1.topArticles__0__category}}",
+              "E": "{{step_1.topArticles__0__score}}",
+              "F": "{{step_1.topArticles__0__url}}",
+              "G": "{{step_1.topArticles__0__description}}"
+            }
+          }
+        },
+        {
+          "app": "email",
+          "event": "send_email",
+          "config": {
+            "to": "{{user_email}}",
+            "subject": "📊 Nederlandse Recruitment Intelligence - {{step_1.timestamp}}",
+            "body": "Dagelijkse update: {{step_1.articlesCollected}} artikelen verzameld.\n              \nTop artikel: {{step_1.topArticles__0__title}} ({{step_1.topArticles__0__score}}/100)\nBron: {{step_1.topArticles__0__source}}\n\nGoogle Sheets bijgewerkt met alle artikelen."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Google Sheets Upload met Artikel Scoring",
+      "description": "Upload artikelen naar Google Sheets met intelligente scoring",
+      "trigger": {
+        "app": "schedule",
+        "event": "every_day",
+        "config": {
+          "time": "09:30",
+          "timezone": "Europe/Amsterdam"
+        }
+      },
+      "actions": [
+        {
+          "app": "webhook",
+          "event": "post",
+          "config": {
+            "url": "https://your-app.herokuapp.com/upload-to-sheets",
+            "method": "POST"
+          }
+        },
+        {
+          "app": "email",
+          "event": "send_email",
+          "config": {
+            "to": "{{user_email}}",
+            "subject": "📊 Dagelijkse Recruitment Intelligence - {{step_1.timestamp}}",
+            "body": "📊 DAGELIJKSE SAMENVATTING:\n\n• Artikelen verwerkt: {{step_1.articlesProcessed}}\n• Gemiddelde score: {{step_1.stats__averageScore}}/100\n• Hoogste score: {{step_1.stats__topScore}}/100\n\n🏆 TOP 3 ARTIKELEN:\n1. {{step_1.topArticles__0__title}} ({{step_1.topArticles__0__score}} pts)\n2. {{step_1.topArticles__1__title}} ({{step_1.topArticles__1__score}} pts)\n3. {{step_1.topArticles__2__title}} ({{step_1.topArticles__2__score}} pts)\n\n📈 Top categorie: {{step_1.stats__topCategory}}\n📰 Meest actieve bron: {{step_1.stats__topSource}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Wekelijkse LinkedIn Content Creatie",
+      "description": "Genereert wekelijkse LinkedIn content op basis van top 5 artikelen",
+      "trigger": {
+        "app": "schedule",
+        "event": "every_week",
+        "config": {
+          "day": "sunday",
+          "time": "10:00",
+          "timezone": "Europe/Amsterdam"
+        }
+      },
+      "actions": [
+        {
+          "app": "webhook",
+          "event": "post",
+          "config": {
+            "url": "https://your-app.herokuapp.com/weekly-content-creation",
+            "method": "POST"
+          }
+        },
+        {
+          "app": "linkedin",
+          "event": "create_post",
+          "config": {
+            "content": "{{step_1.linkedinContent__weeklyRoundup__content}}",
+            "visibility": "public"
+          }
+        },
+        {
+          "app": "email",
+          "event": "send_email",
+          "config": {
+            "to": "{{user_email}}",
+            "subject": "📝 Wekelijkse LinkedIn Content Klaar",
+            "body": "📝 WEKELIJKSE LINKEDIN CONTENT GEGENEREERD\n\nGebaseerd op {{step_1.weeklyAnalysis__totalArticles}} artikelen\nGemiddelde relevantie: {{step_1.weeklyAnalysis__avgScore}}/100\n\n===== WEEKLY ROUNDUP POST =====\n{{step_1.linkedinContent__weeklyRoundup__content}}\n\n===== INSIGHT POST =====\n{{step_1.linkedinContent__insightPost__content}}\n\n🎯 TRENDING ONDERWERPEN:\n{{step_1.weeklyAnalysis__topTrends__0__keyword}}: {{step_1.weeklyAnalysis__topTrends__0__mentions}} mentions\n{{step_1.weeklyAnalysis__topTrends__1__keyword}}: {{step_1.weeklyAnalysis__topTrends__1__mentions}} mentions"
+          }
+        }
+      ]
+    },
+    {
+      "name": "High-Score Artikel Alert System",
+      "description": "Alert bij artikelen met score >90 punten",
+      "trigger": {
+        "app": "webhook",
+        "event": "get",
+        "config": {
+          "url": "https://your-app.herokuapp.com/get-top-articles",
+          "schedule": "every_6_hours"
+        }
+      },
+      "filter": {
+        "field": "topScore",
+        "operator": "greater_than",
+        "value": 90
+      },
+      "actions": [
+        {
+          "app": "slack",
+          "event": "send_channel_message",
+          "config": {
+            "channel": "#recruitment-intelligence",
+            "text": "🚨 HIGH-SCORE RECRUITMENT ARTIKEL GEVONDEN!\n\n📰 {{trigger.topArticles__0__title}}\n🏆 Score: {{trigger.topArticles__0__score}}/100\n📊 Bron: {{trigger.topArticles__0__source}}\n🏷️ Categorie: {{trigger.topArticles__0__category}}\n\nDit artikel scoort exceptioneel hoog - bekijk direct!\n🔗 {{trigger.topArticles__0__url}}"
+          }
+        },
+        {
+          "app": "email",
+          "event": "send_email",
+          "config": {
+            "to": "{{user_email}}",
+            "subject": "🚨 High-Score Recruitment Artikel Alert",
+            "body": "Een artikel heeft een exceptioneel hoge score behaald!\n\nTitel: {{trigger.topArticles__0__title}}\nScore: {{trigger.topArticles__0__score}}/100\nBron: {{trigger.topArticles__0__source}}\nURL: {{trigger.topArticles__0__url}}\n\nDit artikel verdient speciale aandacht voor je recruitment strategy."
+          }
+        }
+      ]
+    }
+  ],
+  "setupInstructions": [
+    "Deploy webhook server naar publieke URL",
+    "Update WEBHOOK_BASE_URL environment variable",
+    "Configureer Google Sheets API credentials",
+    "Setup LinkedIn API voor posting",
+    "Test alle webhook endpoints",
+    "Create Zaps in Zapier dashboard",
+    "Activate en monitor Zaps"
+  ]
+}

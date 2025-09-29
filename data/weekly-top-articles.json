@@ -1,0 +1,107 @@
+[
+  {
+    "date": "2025-09-28",
+    "articles": [
+      {
+        "datum": "28-9-2025",
+        "bron": "Werf&",
+        "categorie": "Arbeidsmarkt",
+        "onderwerp": "Tekort aan IT-talent: Nederlandse arbeidsmarkt onder druk",
+        "url": "https://www.werf-en.nl/it-talent-tekort-nederland-2025/",
+        "score": 44,
+        "beschrijving": "Het tekort aan gekwalificeerde IT-professionals in Nederland bereikt recordhoogte in 2025.",
+        "keywords": "arbeidsmarkt, tekort, talent",
+        "gepubliceerd": "28-9-2025"
+      },
+      {
+        "datum": "28-9-2025",
+        "bron": "Intelligence Group",
+        "categorie": "Arbeidsmarktonderzoek",
+        "onderwerp": "Arbeidsmarktmonitor Q3 2025: Krapte in tech sector houdt aan",
+        "url": "https://www.intelligence-group.nl/arbeidsmarktmonitor-q3-2025/",
+        "score": 43,
+        "beschrijving": "Nieuwe cijfers tonen aan dat de krapte op de Nederlandse arbeidsmarkt vooral in de techsector aanhoudende problemen veroorzaakt.",
+        "keywords": "arbeidsmarkt, krapte",
+        "gepubliceerd": "28-9-2025"
+      },
+      {
+        "datum": "28-9-2025",
+        "bron": "Intelligence Group",
+        "categorie": "Salaris & Arbeidsvoorwaarden",
+        "onderwerp": "Salarisonderzoek 2025: IT-professionals verdienen 8% meer",
+        "url": "https://www.intelligence-group.nl/salarisonderzoek-it-2025/",
+        "score": 41,
+        "beschrijving": "Het jaarlijkse salarisonderzoek toont significante stijgingen in de IT-sector, met name voor DevOps en AI-specialisten.",
+        "keywords": "ai, salaris",
+        "gepubliceerd": "28-9-2025"
+      },
+      {
+        "datum": "28-9-2025",
+        "bron": "Werf&",
+        "categorie": "AI & Technologie",
+        "onderwerp": "AI in recruitment: Nederlandse bedrijven lopen voorop in Europa",
+        "url": "https://www.werf-en.nl/ai-recruitment-nederland-europa-2025/",
+        "score": 36,
+        "beschrijving": "Onderzoek toont aan dat Nederlandse recruitment bureaus sneller AI-technologie implementeren dan andere Europese landen.",
+        "keywords": "ai",
+        "gepubliceerd": "28-9-2025"
+      },
+      {
+        "datum": "28-9-2025",
+        "bron": "RecruitmentTech.nl",
+        "categorie": "AI & Technologie",
+        "onderwerp": "ChatGPT in recruitment: praktische toepassingen voor Nederlandse recruiters",
+        "url": "https://www.recruitmenttech.nl/chatgpt-recruitment-nederland/",
+        "score": 36,
+        "beschrijving": "Hoe Nederlandse recruitment professionals ChatGPT en andere AI-tools inzetten voor efficiëntere werving.",
+        "keywords": "ai",
+        "gepubliceerd": "28-9-2025"
+      },
+      {
+        "datum": "28-9-2025",
+        "bron": "Personnel & Winst (P&W)",
+        "categorie": "Toekomst van Werk",
+        "onderwerp": "Hybride werken blijft norm in Nederlandse arbeidsmarkt",
+        "url": "https://www.pwnet.nl/hybride-werken-nederlandse-arbeidsmarkt-2025/",
+        "score": 36,
+        "beschrijving": "Onderzoek wijst uit dat hybride werken definitief de nieuwe standaard is geworden voor Nederlandse kenniswerkers.",
+        "keywords": "arbeidsmarkt, hybride werk",
+        "gepubliceerd": "28-9-2025"
+      },
+      {
+        "datum": "28-9-2025",
+        "bron": "RecruitmentTech.nl",
+        "categorie": "Recruitment Technology",
+        "onderwerp": "Nieuwe ATS-systemen winnen terrein in Nederlandse markt",
+        "url": "https://www.recruitmenttech.nl/ats-systemen-nederland-2025/",
+        "score": 34,
+        "beschrijving": "Nederlandse recruitment bureaus investeren massaal in nieuwe Applicant Tracking Systems met AI-functionaliteit.",
+        "keywords": "ai",
+        "gepubliceerd": "28-9-2025"
+      },
+      {
+        "datum": "28-9-2025",
+        "bron": "Personnel & Winst (P&W)",
+        "categorie": "HR & Wetgeving",
+        "onderwerp": "HR-wetgeving 2025: belangrijke wijzigingen voor Nederlandse werkgevers",
+        "url": "https://www.pwnet.nl/hr-wetgeving-wijzigingen-2025/",
+        "score": 29,
+        "beschrijving": "Overzicht van de belangrijkste wetswijzigingen die in 2025 van kracht worden voor Nederlandse HR-afdelingen.",
+        "keywords": "wetgeving",
+        "gepubliceerd": "28-9-2025"
+      },
+      {
+        "datum": "28-9-2025",
+        "bron": "HRkrant",
+        "categorie": "D&I",
+        "onderwerp": "Diversiteit & Inclusie: Nederlandse bedrijven maken progressie",
+        "url": "https://www.hrkrant.nl/diversiteit-inclusie-nederlandse-bedrijven-2025/",
+        "score": 29,
+        "beschrijving": "Nieuwe benchmark toont aan dat Nederlandse organisaties stappen maken in diversiteit en inclusie beleid.",
+        "keywords": "diversiteit, inclusie",
+        "gepubliceerd": "28-9-2025"
+      }
+    ],
+    "addedAt": "2025-09-28T17:36:01.351Z"
+  }
+]

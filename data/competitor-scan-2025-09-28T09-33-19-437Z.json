@@ -1,0 +1,84 @@
+{
+  "timestamp": "2025-09-28T09:33:19.438Z",
+  "competitors": [
+    "Time to Hire",
+    "Enhr",
+    "De Selectie",
+    "Procontact"
+  ],
+  "total_insights": 8,
+  "insights": [
+    {
+      "competitor": "Time to Hire",
+      "type": "market_expansion",
+      "title": "Time to Hire enters new European markets",
+      "summary": "International growth demonstrates market confidence",
+      "impact": 5,
+      "priority": "medium",
+      "timestamp": "2025-09-28T09:33:19.436Z"
+    },
+    {
+      "competitor": "Time to Hire",
+      "type": "product_launches",
+      "title": "Time to Hire launches AI-powered recruitment platform",
+      "summary": "Innovation platform positions for market leadership",
+      "impact": 1,
+      "priority": "low",
+      "timestamp": "2025-09-28T09:33:19.437Z"
+    },
+    {
+      "competitor": "Enhr",
+      "type": "hiring",
+      "title": "Enhr expanding with 18 new hires",
+      "summary": "Rapid team growth indicates strong market demand",
+      "impact": 3,
+      "priority": "low",
+      "timestamp": "2025-09-28T09:33:19.437Z"
+    },
+    {
+      "competitor": "Enhr",
+      "type": "product_launches",
+      "title": "Enhr launches AI-powered recruitment platform",
+      "summary": "Innovation platform positions for market leadership",
+      "impact": 1,
+      "priority": "medium",
+      "timestamp": "2025-09-28T09:33:19.437Z"
+    },
+    {
+      "competitor": "De Selectie",
+      "type": "partnerships",
+      "title": "De Selectie partners with major enterprise client",
+      "summary": "Strategic alliance expands customer reach",
+      "impact": 5,
+      "priority": "medium",
+      "timestamp": "2025-09-28T09:33:19.437Z"
+    },
+    {
+      "competitor": "De Selectie",
+      "type": "hiring",
+      "title": "De Selectie expanding with 15 new hires",
+      "summary": "Rapid team growth indicates strong market demand",
+      "impact": 4,
+      "priority": "low",
+      "timestamp": "2025-09-28T09:33:19.437Z"
+    },
+    {
+      "competitor": "Procontact",
+      "type": "partnerships",
+      "title": "Procontact partners with major enterprise client",
+      "summary": "Strategic alliance expands customer reach",
+      "impact": 5,
+      "priority": "medium",
+      "timestamp": "2025-09-28T09:33:19.437Z"
+    },
+    {
+      "competitor": "Procontact",
+      "type": "market_expansion",
+      "title": "Procontact enters new European markets",
+      "summary": "International growth demonstrates market confidence",
+      "impact": 3,
+      "priority": "high",
+      "timestamp": "2025-09-28T09:33:19.437Z"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+# Dutch Recruitment Intelligence Monitoring
+# Health check elke 15 minuten
+*/15 * * * * /path/to/monitoring.sh >> /var/log/recruitment-monitoring.log 2>&1
+
+# Daily backup om 02:00
+0 2 * * * cd /path/to/project && node backup-system.cjs >> /var/log/recruitment-backup.log 2>&1

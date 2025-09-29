@@ -1,0 +1,27 @@
+{
+  "name": "dutch-recruitment-intelligence",
+  "version": "1.0.0",
+  "description": "Nederlandse Recruitment Intelligence Webhook Server",
+  "main": "zapier-webhook-server.cjs",
+  "scripts": {
+    "start": "node zapier-webhook-server.cjs",
+    "dev": "node zapier-webhook-server.cjs 3000",
+    "test": "node zapier-deployment.cjs test",
+    "health": "curl -f http://localhost:$PORT/status || exit 1"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "dependencies": {
+    "jsdom": "^22.0.0"
+  },
+  "keywords": [
+    "recruitment",
+    "automation",
+    "zapier",
+    "webhook",
+    "netherlands"
+  ],
+  "author": "Dutch Recruitment Intelligence System",
+  "license": "MIT"
+}

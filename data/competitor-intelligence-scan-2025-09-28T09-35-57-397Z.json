@@ -1,0 +1,127 @@
+{
+  "app": "competitor-intelligence",
+  "type": "scan",
+  "timestamp": "2025-09-28T09:35:57.397Z",
+  "data": {
+    "competitors": [
+      "Time to Hire",
+      "Enhr",
+      "De Selectie",
+      "Procontact"
+    ],
+    "focus_areas": [
+      "all"
+    ],
+    "insights": [
+      {
+        "competitor": "Time to Hire",
+        "type": "market_expansion",
+        "priority": "medium",
+        "title": "Time to Hire enters German market",
+        "summary": "Competitor development tracked and analyzed",
+        "impact_score": 4,
+        "timestamp": "2025-09-28T09:35:57.396Z"
+      },
+      {
+        "competitor": "Time to Hire",
+        "type": "funding",
+        "priority": "low",
+        "title": "Time to Hire secures €34M Series B funding",
+        "summary": "Competitor development tracked and analyzed",
+        "impact_score": 1,
+        "timestamp": "2025-09-28T09:35:57.397Z"
+      },
+      {
+        "competitor": "Time to Hire",
+        "type": "product_launches",
+        "priority": "low",
+        "title": "Time to Hire launches AI-powered recruitment automation platform",
+        "summary": "Competitor development tracked and analyzed",
+        "impact_score": 4,
+        "timestamp": "2025-09-28T09:35:57.397Z"
+      },
+      {
+        "competitor": "Enhr",
+        "type": "market_expansion",
+        "priority": "medium",
+        "title": "Enhr enters Belgian market",
+        "summary": "Competitor development tracked and analyzed",
+        "impact_score": 3,
+        "timestamp": "2025-09-28T09:35:57.397Z"
+      },
+      {
+        "competitor": "Enhr",
+        "type": "partnerships",
+        "priority": "high",
+        "title": "Enhr forms strategic partnership with enterprise HR provider",
+        "summary": "Competitor development tracked and analyzed",
+        "impact_score": 3,
+        "timestamp": "2025-09-28T09:35:57.397Z"
+      },
+      {
+        "competitor": "De Selectie",
+        "type": "partnerships",
+        "priority": "high",
+        "title": "De Selectie forms strategic partnership with enterprise HR provider",
+        "summary": "Competitor development tracked and analyzed",
+        "impact_score": 1,
+        "timestamp": "2025-09-28T09:35:57.397Z"
+      },
+      {
+        "competitor": "De Selectie",
+        "type": "product_launches",
+        "priority": "medium",
+        "title": "De Selectie launches AI-powered recruitment automation platform",
+        "summary": "Competitor development tracked and analyzed",
+        "impact_score": 3,
+        "timestamp": "2025-09-28T09:35:57.397Z"
+      },
+      {
+        "competitor": "De Selectie",
+        "type": "hiring",
+        "priority": "medium",
+        "title": "De Selectie expanding team with 36 new positions",
+        "summary": "Competitor development tracked and analyzed",
+        "impact_score": 2,
+        "timestamp": "2025-09-28T09:35:57.397Z"
+      },
+      {
+        "competitor": "Procontact",
+        "type": "hiring",
+        "priority": "low",
+        "title": "Procontact expanding team with 26 new positions",
+        "summary": "Competitor development tracked and analyzed",
+        "impact_score": 2,
+        "timestamp": "2025-09-28T09:35:57.397Z"
+      },
+      {
+        "competitor": "Procontact",
+        "type": "product_launches",
+        "priority": "high",
+        "title": "Procontact launches AI-powered recruitment automation platform",
+        "summary": "Competitor development tracked and analyzed",
+        "impact_score": 2,
+        "timestamp": "2025-09-28T09:35:57.397Z"
+      },
+      {
+        "competitor": "Procontact",
+        "type": "product_launches",
+        "priority": "low",
+        "title": "Procontact launches AI-powered recruitment automation platform",
+        "summary": "Competitor development tracked and analyzed",
+        "impact_score": 2,
+        "timestamp": "2025-09-28T09:35:57.397Z"
+      },
+      {
+        "competitor": "Procontact",
+        "type": "funding",
+        "priority": "low",
+        "title": "Procontact secures €36M Series B funding",
+        "summary": "Competitor development tracked and analyzed",
+        "impact_score": 3,
+        "timestamp": "2025-09-28T09:35:57.397Z"
+      }
+    ],
+    "summary": "12 developments tracked, 3 high-priority items requiring immediate attention"
+  }
+}

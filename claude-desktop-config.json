@@ -1,0 +1,44 @@
+{
+  "mcpServers": {
+    "canva-dev": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@canva/cli@latest",
+        "mcp"
+      ]
+    },
+    "competitor-intelligence": {
+      "command": "node",
+      "args": ["competitor-intelligence/mcp-server.cjs"],
+      "cwd": "/Users/wouterarts/Downloads/local-mcp-apps",
+      "env": {
+        "NODE_ENV": "production"
+      }
+    },
+    "salary-benchmark": {
+      "command": "node", 
+      "args": ["salary-benchmark/mcp-server.cjs"],
+      "cwd": "/Users/wouterarts/Downloads/local-mcp-apps",
+      "env": {
+        "NODE_ENV": "production"
+      }
+    },
+    "vacature-research": {
+      "command": "node",
+      "args": ["vacature-research/mcp-server.cjs"],
+      "cwd": "/Users/wouterarts/Downloads/local-mcp-apps",
+      "env": {
+        "NODE_ENV": "production"
+      }
+    },
+    "recruitment-trends": {
+      "command": "node",
+      "args": ["recruitment-trends/daily-trends-mcp.cjs"],
+      "cwd": "/Users/wouterarts/Downloads/local-mcp-apps",
+      "env": {
+        "NODE_ENV": "production"
+      }
+    }
+  }
+}

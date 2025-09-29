@@ -1,0 +1,525 @@
+#!/usr/bin/env node
+
+/**
+ * Zapier Webhook Server voor Nederlandse Recruitment Intelligence
+ * Webhook endpoints voor Zapier integratie
+ */
+
+const http = require('http');
+const https = require('https');
+const fs = require('fs').promises;
+const path = require('path');
+const url = require('url');
+
+const DutchRecruitmentNewsScraper = require('./dutch-recruitment-news-scraper.cjs');
+const GoogleSheetsUploader = require('./google-sheets-uploader.cjs');
+const LinkedInContentCreator = require('./linkedin-content-creator.cjs');
+
+class ZapierWebhookServer {
+  constructor(port = 3000) {
+    this.port = port;
+    this.scraper = new DutchRecruitmentNewsScraper();
+    this.uploader = new GoogleSheetsUploader();
+    this.contentCreator = new LinkedInContentCreator();
+    this.dataDir = path.join(__dirname, 'data');
+    this.webhookSecret = process.env.WEBHOOK_SECRET || 'recruitment_intelligence_2025';
+  }
+
+  async handleWebhookRequest(req, res, endpoint) {
+    const startTime = Date.now();
+    
+    try {
+      // CORS headers voor Zapier
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+      res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+      res.setHeader('Content-Type', 'application/json');
+
+      if (req.method === 'OPTIONS') {
+        res.writeHead(200);
+        res.end();
+        return;
+      }
+
+      console.log(`📡 Zapier webhook ontvangen: ${endpoint} (${req.method})`);
+
+      switch (endpoint) {
+        case '/daily-news-collection':
+          await this.handleDailyNewsCollection(req, res);
+          break;
+        case '/reports':
+          await this.handleReportsView(req, res);
+          break;
+        case '/upload-to-sheets':
+          await this.handleSheetsUpload(req, res);
+          break;
+        case '/weekly-content-creation':
+          await this.handleWeeklyContentCreation(req, res);
+          break;
+        case '/get-top-articles':
+          await this.handleGetTopArticles(req, res);
+          break;
+        case '/status':
+          await this.handleStatusCheck(req, res);
+          break;
+        case '/test':
+          await this.handleTestEndpoint(req, res);
+          break;
+        default:
+          this.sendErrorResponse(res, 404, 'Endpoint not found');
+      }
+
+      const duration = Date.now() - startTime;
+      console.log(`✅ Webhook verwerkt in ${duration}ms`);
+
+    } catch (error) {
+      console.error('❌ Webhook error:', error.message);
+      this.sendErrorResponse(res, 500, error.message);
+    }
+  }
+
+  async handleDailyNewsCollection(req, res) {
+    console.log('🇳🇱 Start dagelijkse nieuws verzameling...');
+    
+    try {
+      // Verzamel Nederlandse recruitment nieuws
+      const newsData = await this.scraper.scrapeAllDutchSources();
+      
+      // Bereid data voor Zapier
+      const zapierResponse = {
+        success: true,
+        timestamp: new Date().toISOString(),
+        articlesCollected: newsData.totalArticles,
+        sources: newsData.sources.length,
+        categories: newsData.categories.length,
+        
+        // Top 5 artikelen voor Zapier
+        topArticles: newsData.categories
+          .flatMap(cat => cat.articles.map(article => ({
+            title: article.title,
+            description: article.description,
+            source: article.source,
+            category: article.category || cat.title,
+            url: article.url || `${article.sourceUrl}/artikel`,
+            publishDate: article.publishDate
+          })))
+          .slice(0, 5),
+        
+        // Categorie overzicht
+        categoryStats: newsData.categories.map(cat => ({
+          name: cat.title,
+          count: cat.count
+        })),
+        
+        insights: newsData.insights,
+        
+        // Zapier trigger data
+        triggerData: {
+          date: new Date().toLocaleDateString('nl-NL'),
+          totalArticles: newsData.totalArticles,
+          hasNewContent: newsData.totalArticles > 0
+        }
+      };
+
+      this.sendSuccessResponse(res, zapierResponse);
+      console.log(`✅ ${newsData.totalArticles} artikelen verzameld en naar Zapier gestuurd`);
+      
+    } catch (error) {
+      this.sendErrorResponse(res, 500, `Nieuws verzameling gefaald: ${error.message}`);
+    }
+  }
+
+  async handleSheetsUpload(req, res) {
+    console.log('📤 Start Google Sheets upload...');
+    
+    try {
+      // Accepteer zowel GET als POST voor Zapier compatibility
+      if (req.method !== 'GET' && req.method !== 'POST') {
+        this.sendErrorResponse(res, 405, 'Method not allowed. Use GET or POST.');
+        return;
+      }
+      
+      // Upload naar Google Sheets met scoring
+      const uploadResult = await this.uploader.runDailyUpload();
+      
+      // Simplified response voor Zapier compatibility
+      const topArticle = uploadResult.topArticles[0] || {};
+      const zapierResponse = {
+        success: true,
+        timestamp: new Date().toISOString(),
+        articlesProcessed: uploadResult.articlesProcessed,
+        
+        // Flat structure - easier for Zapier to parse
+        title: topArticle.onderwerp || 'Geen artikel gevonden',
+        description: topArticle.beschrijving ? topArticle.beschrijving.substring(0, 500) : '',
+        source: topArticle.bron || '',
+        category: topArticle.categorie || '',
+        score: topArticle.score || 0,
+        url: topArticle.url || '',
+        date: topArticle.datum || new Date().toISOString().split('T')[0],
+        
+        // Summary stats
+        averageScore: uploadResult.stats?.averageScore || 0,
+        topCategory: uploadResult.stats?.topCategory || '',
+        totalSources: uploadResult.stats?.totalSources || 0
+          averageScore: Math.round(uploadResult.topArticles.reduce((sum, a) => sum + a.score, 0) / uploadResult.topArticles.length),
+          topScore: uploadResult.topArticles[0]?.score || 0,
+          topCategory: uploadResult.topArticles[0]?.categorie || 'Onbekend',
+          topSource: uploadResult.topArticles[0]?.bron || 'Onbekend'
+        },
+        
+        // Voor email/Slack notificaties via Zapier
+        notification: {
+          subject: `📊 Nederlandse Recruitment Intelligence - ${new Date().toLocaleDateString('nl-NL')}`,
+          message: `${uploadResult.articlesProcessed} artikelen verwerkt. Top artikel: "${uploadResult.topArticles[0]?.onderwerp}" (Score: ${uploadResult.topArticles[0]?.score}/100)`,
+          dailySummary: `Vandaag ${uploadResult.articlesProcessed} Nederlandse recruitment artikelen geanalyseerd en gescoord. Gemiddelde relevantie: ${Math.round(uploadResult.topArticles.reduce((sum, a) => sum + a.score, 0) / uploadResult.topArticles.length)}/100`
+        }
+      };
+
+      this.sendSuccessResponse(res, zapierResponse);
+      console.log(`✅ ${uploadResult.articlesProcessed} artikelen geüpload en naar Zapier gestuurd`);
+      
+    } catch (error) {
+      this.sendErrorResponse(res, 500, `Sheets upload gefaald: ${error.message}`);
+    }
+  }
+
+  async handleWeeklyContentCreation(req, res) {
+    console.log('📝 Start wekelijkse LinkedIn content creatie...');
+    
+    try {
+      const contentResult = await this.contentCreator.runWeeklyContentCreation();
+      
+      // Laad gegenereerde content voor Zapier
+      const contentFiles = {};
+      for (const [type, filepath] of Object.entries(contentResult.savedFiles)) {
+        const content = await fs.readFile(filepath, 'utf-8');
+        contentFiles[type] = {
+          content: content,
+          wordCount: content.split(' ').length,
+          filename: path.basename(filepath)
+        };
+      }
+
+      const zapierResponse = {
+        success: true,
+        timestamp: new Date().toISOString(),
+        contentGenerated: contentResult.contentGenerated,
+        
+        // LinkedIn content voor Zapier
+        linkedinContent: {
+          weeklyRoundup: {
+            content: contentFiles.weeklyRoundup?.content || '',
+            wordCount: contentFiles.weeklyRoundup?.wordCount || 0,
+            readyForPublishing: true
+          },
+          insightPost: {
+            content: contentFiles.insightPost?.content || '',
+            wordCount: contentFiles.insightPost?.wordCount || 0,
+            readyForPublishing: true
+          },
+          trendAnalysis: {
+            content: contentFiles.trendAnalysis?.content || '',
+            wordCount: contentFiles.trendAnalysis?.wordCount || 0,
+            readyForPublishing: true
+          },
+          longFormArticle: {
+            content: contentFiles.longFormArticle?.content || '',
+            wordCount: contentFiles.longFormArticle?.wordCount || 0,
+            readyForPublishing: true
+          }
+        },
+        
+        // Trend analyse voor Zapier
+        weeklyAnalysis: {
+          totalArticles: contentResult.analysis.totalArticles,
+          avgScore: contentResult.analysis.avgScore,
+          weekRange: contentResult.analysis.weekRange,
+          topTrends: contentResult.analysis.topKeywords.slice(0, 3).map(([keyword, count]) => ({
+            keyword,
+            mentions: count
+          })),
+          topCategories: contentResult.analysis.topCategories.slice(0, 3).map(([category, count]) => ({
+            category,
+            articles: count
+          }))
+        },
+        
+        // Voor automatische LinkedIn posting via Zapier
+        recommendedPost: contentFiles.weeklyRoundup?.content.split('\n\n').slice(0, 4).join('\n\n') + '\n\n#RecruitmentNL #HRTrends',
+        
+        // Email notificatie data
+        notification: {
+          subject: `📝 Wekelijkse LinkedIn Content Klaar - Week ${new Date().toLocaleDateString('nl-NL')}`,
+          message: `${contentResult.contentGenerated} content formaten gegenereerd op basis van ${contentResult.analysis.totalArticles} geanalyseerde artikelen.`,
+          contentSummary: `Weekly Roundup (${contentFiles.weeklyRoundup?.wordCount || 0} woorden), Insight Post (${contentFiles.insightPost?.wordCount || 0} woorden), Trend Analysis (${contentFiles.trendAnalysis?.wordCount || 0} woorden), Long-form Article (${contentFiles.longFormArticle?.wordCount || 0} woorden)`
+        }
+      };
+
+      this.sendSuccessResponse(res, zapierResponse);
+      console.log(`✅ ${contentResult.contentGenerated} content formaten gegenereerd en naar Zapier gestuurd`);
+      
+    } catch (error) {
+      this.sendErrorResponse(res, 500, `Content creatie gefaald: ${error.message}`);
+    }
+  }
+
+  async handleGetTopArticles(req, res) {
+    console.log('🏆 Ophalen top artikelen...');
+    
+    try {
+      // Laad laatste artikelen data
+      const latestNews = JSON.parse(await fs.readFile(path.join(this.dataDir, 'latest-dutch-news.json'), 'utf-8'));
+      
+      // Bereken scores (vereenvoudigde versie voor snelheid)
+      const articlesWithScores = [];
+      for (const category of latestNews.categories) {
+        for (const article of category.articles) {
+          const score = await this.calculateSimpleScore(article, category.title);
+          articlesWithScores.push({
+            ...article,
+            category: category.title,
+            score
+          });
+        }
+      }
+      
+      // Sorteer en neem top 10
+      const topArticles = articlesWithScores
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 10)
+        .map((article, index) => ({
+          rank: index + 1,
+          title: article.title,
+          description: article.description,
+          source: article.source,
+          category: article.category,
+          score: article.score,
+          url: article.url || `${article.sourceUrl}/artikel`,
+          publishDate: article.publishDate,
+          readyForZapier: true
+        }));
+
+      const zapierResponse = {
+        success: true,
+        timestamp: new Date().toISOString(),
+        topArticles,
+        totalEvaluated: articlesWithScores.length,
+        averageScore: Math.round(articlesWithScores.reduce((sum, a) => sum + a.score, 0) / articlesWithScores.length),
+        
+        // Voor Zapier filters/conditions
+        hasHighScoreArticles: topArticles.some(a => a.score >= 80),
+        topScore: topArticles[0]?.score || 0,
+        topCategory: topArticles[0]?.category || 'Onbekend'
+      };
+
+      this.sendSuccessResponse(res, zapierResponse);
+      console.log(`✅ Top ${topArticles.length} artikelen naar Zapier gestuurd`);
+      
+    } catch (error) {
+      this.sendErrorResponse(res, 500, `Top artikelen ophalen gefaald: ${error.message}`);
+    }
+  }
+
+  async calculateSimpleScore(article, category) {
+    let score = 0;
+    const text = `${article.title} ${article.description}`.toLowerCase();
+    
+    // Basis scoring voor Zapier snelheid
+    if (text.includes('ai')) score += 10;
+    if (text.includes('recruitment')) score += 5;
+    if (text.includes('technol')) score += 8;
+    if (text.includes('arbeidsmarkt')) score += 9;
+    if (text.includes('salaris')) score += 7;
+    if (text.includes('tekort')) score += 8;
+    
+    // Categorie bonus
+    if (category.includes('AI')) score += 10;
+    if (category.includes('Technol')) score += 8;
+    if (category.includes('Arbeidsmarkt')) score += 9;
+    
+    return Math.min(score, 100);
+  }
+
+  async handleStatusCheck(req, res) {
+    console.log('🔍 Status check...');
+    
+    try {
+      const status = {
+        server: 'running',
+        timestamp: new Date().toISOString(),
+        uptime: process.uptime(),
+        
+        // Check data beschikbaarheid
+        dataAvailable: {
+          dutchNews: await this.checkFileExists('latest-dutch-news.json'),
+          weeklyArticles: await this.checkFileExists('weekly-top-articles.json'),
+          sheetsBackup: await this.checkLatestSheetsBackup()
+        },
+        
+        // Systeem info voor Zapier monitoring
+        system: {
+          nodeVersion: process.version,
+          platform: process.platform,
+          memoryUsage: Math.round(process.memoryUsage().heapUsed / 1024 / 1024) + 'MB'
+        },
+        
+        // Endpoints voor Zapier
+        availableEndpoints: [
+          '/daily-news-collection',
+          '/upload-to-sheets', 
+          '/weekly-content-creation',
+          '/get-top-articles',
+          '/status',
+          '/test'
+        ]
+      };
+
+      this.sendSuccessResponse(res, status);
+      
+    } catch (error) {
+      this.sendErrorResponse(res, 500, `Status check gefaald: ${error.message}`);
+    }
+  }
+
+  async handleReportsView(req, res) {
+    try {
+      const reportsDir = path.join(__dirname, 'reports');
+      
+      // Check if reports directory exists
+      try {
+        await fs.access(reportsDir);
+      } catch (error) {
+        res.writeHead(404, { 'Content-Type': 'text/html' });
+        res.end('<h1>Geen rapporten gevonden</h1><p>Reports directory bestaat niet.</p>');
+        return;
+      }
+
+      const files = await fs.readdir(reportsDir);
+      const htmlFiles = files.filter(file => file.endsWith('.html'));
+      
+      if (htmlFiles.length === 0) {
+        res.writeHead(404, { 'Content-Type': 'text/html' });
+        res.end('<h1>Geen HTML rapporten gevonden</h1>');
+        return;
+      }
+
+      // Serve the latest report
+      const latestReport = htmlFiles.sort().reverse()[0];
+      const reportPath = path.join(reportsDir, latestReport);
+      const reportContent = await fs.readFile(reportPath, 'utf8');
+      
+      res.writeHead(200, { 'Content-Type': 'text/html' });
+      res.end(reportContent);
+      
+    } catch (error) {
+      console.error('❌ Error serving reports:', error);
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ 
+        success: false, 
+        error: 'Failed to serve reports',
+        message: error.message,
+        timestamp: new Date().toISOString()
+      }));
+    }
+  }
+
+  async handleTestEndpoint(req, res) {
+    console.log('🧪 Test endpoint...');
+    
+    const testResponse = {
+      success: true,
+      message: 'Zapier webhook server werkt correct!',
+      timestamp: new Date().toISOString(),
+      testData: {
+        sampleArticle: {
+          title: 'Test Recruitment Artikel',
+          description: 'Dit is een test artikel voor Zapier integratie.',
+          source: 'Test Bron',
+          category: 'Test Categorie',
+          score: 85,
+          url: 'https://example.com/test'
+        },
+        zapierCompatible: true,
+        readyForProduction: true
+      }
+    };
+
+    this.sendSuccessResponse(res, testResponse);
+    console.log('✅ Test succesvol naar Zapier gestuurd');
+  }
+
+  async checkFileExists(filename) {
+    try {
+      await fs.access(path.join(this.dataDir, filename));
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  async checkLatestSheetsBackup() {
+    try {
+      const files = await fs.readdir(this.dataDir);
+      const backupFiles = files.filter(f => f.startsWith('sheets-backup-'));
+      return backupFiles.length > 0;
+    } catch {
+      return false;
+    }
+  }
+
+  sendSuccessResponse(res, data) {
+    res.writeHead(200);
+    res.end(JSON.stringify(data, null, 2));
+  }
+
+  sendErrorResponse(res, statusCode, message) {
+    res.writeHead(statusCode);
+    res.end(JSON.stringify({
+      success: false,
+      error: message,
+      timestamp: new Date().toISOString()
+    }));
+  }
+
+  startServer() {
+    const server = http.createServer(async (req, res) => {
+      const parsedUrl = url.parse(req.url, true);
+      await this.handleWebhookRequest(req, res, parsedUrl.pathname);
+    });
+
+    server.listen(this.port, () => {
+      console.log('🚀 **ZAPIER WEBHOOK SERVER GESTART**');
+      console.log('='.repeat(50));
+      console.log(`🌐 Server draait op poort: ${this.port}`);
+      console.log(`📡 Webhook base URL: http://localhost:${this.port}`);
+      console.log('');
+      console.log('📋 **BESCHIKBARE ENDPOINTS:**');
+      console.log(`   POST /daily-news-collection     - Dagelijkse nieuws verzameling`);
+      console.log(`   POST /upload-to-sheets          - Upload naar Google Sheets`);
+      console.log(`   POST /weekly-content-creation   - Wekelijkse LinkedIn content`);
+      console.log(`   GET  /get-top-articles          - Haal top artikelen op`);
+      console.log(`   GET  /status                    - Server status`);
+      console.log(`   GET  /test                      - Test endpoint`);
+      console.log('');
+      console.log('🎯 **ZAPIER INTEGRATIE READY!**');
+    });
+
+    return server;
+  }
+}
+
+// Start server als dit script direct wordt uitgevoerd
+if (require.main === module) {
+  const port = process.argv[2] || process.env.PORT || 3000;
+  const server = new ZapierWebhookServer(port);
+  server.startServer();
+
+  // Graceful shutdown
+  process.on('SIGINT', () => {
+    console.log('\n🛑 Server wordt gestopt...');
+    process.exit(0);
+  });
+}
+
+module.exports = ZapierWebhookServer;

@@ -1,0 +1,218 @@
+{
+  "title": "Nederlandse Recruitment Intelligence",
+  "date": "zondag 28 september 2025",
+  "totalArticles": 9,
+  "categories": [
+    {
+      "title": "AI & Technologie",
+      "articles": [
+        {
+          "title": "AI in recruitment: Nederlandse bedrijven lopen voorop in Europa",
+          "description": "Onderzoek toont aan dat Nederlandse recruitment bureaus sneller AI-technologie implementeren dan andere Europese landen.",
+          "url": "https://www.werf-en.nl/ai-recruitment-nederland-europa-2025/",
+          "category": "AI & Technologie",
+          "source": "Werf&",
+          "sourceUrl": "https://www.werf-en.nl",
+          "publishDate": "2025-09-28T17:20:46.653Z",
+          "language": "nl",
+          "country": "Nederland"
+        },
+        {
+          "title": "ChatGPT in recruitment: praktische toepassingen voor Nederlandse recruiters",
+          "description": "Hoe Nederlandse recruitment professionals ChatGPT en andere AI-tools inzetten voor efficiëntere werving.",
+          "url": "https://www.recruitmenttech.nl/chatgpt-recruitment-nederland/",
+          "category": "AI & Technologie",
+          "source": "RecruitmentTech.nl",
+          "sourceUrl": "https://www.recruitmenttech.nl",
+          "publishDate": "2025-09-28T17:20:46.653Z",
+          "language": "nl",
+          "country": "Nederland"
+        }
+      ],
+      "count": 2
+    },
+    {
+      "title": "Arbeidsmarkt",
+      "articles": [
+        {
+          "title": "Tekort aan IT-talent: Nederlandse arbeidsmarkt onder druk",
+          "description": "Het tekort aan gekwalificeerde IT-professionals in Nederland bereikt recordhoogte in 2025.",
+          "url": "https://www.werf-en.nl/it-talent-tekort-nederland-2025/",
+          "category": "Arbeidsmarkt",
+          "source": "Werf&",
+          "sourceUrl": "https://www.werf-en.nl",
+          "publishDate": "2025-09-28T17:20:46.653Z",
+          "language": "nl",
+          "country": "Nederland"
+        }
+      ],
+      "count": 1
+    },
+    {
+      "title": "Arbeidsmarktonderzoek",
+      "articles": [
+        {
+          "title": "Arbeidsmarktmonitor Q3 2025: Krapte in tech sector houdt aan",
+          "description": "Nieuwe cijfers tonen aan dat de krapte op de Nederlandse arbeidsmarkt vooral in de techsector aanhoudende problemen veroorzaakt.",
+          "url": "https://www.intelligence-group.nl/arbeidsmarktmonitor-q3-2025/",
+          "category": "Arbeidsmarktonderzoek",
+          "source": "Intelligence Group",
+          "sourceUrl": "https://www.intelligence-group.nl",
+          "publishDate": "2025-09-28T17:20:46.653Z",
+          "language": "nl",
+          "country": "Nederland"
+        }
+      ],
+      "count": 1
+    },
+    {
+      "title": "Salaris & Arbeidsvoorwaarden",
+      "articles": [
+        {
+          "title": "Salarisonderzoek 2025: IT-professionals verdienen 8% meer",
+          "description": "Het jaarlijkse salarisonderzoek toont significante stijgingen in de IT-sector, met name voor DevOps en AI-specialisten.",
+          "url": "https://www.intelligence-group.nl/salarisonderzoek-it-2025/",
+          "category": "Salaris & Arbeidsvoorwaarden",
+          "source": "Intelligence Group",
+          "sourceUrl": "https://www.intelligence-group.nl",
+          "publishDate": "2025-09-28T17:20:46.653Z",
+          "language": "nl",
+          "country": "Nederland"
+        }
+      ],
+      "count": 1
+    },
+    {
+      "title": "Recruitment Technology",
+      "articles": [
+        {
+          "title": "Nieuwe ATS-systemen winnen terrein in Nederlandse markt",
+          "description": "Nederlandse recruitment bureaus investeren massaal in nieuwe Applicant Tracking Systems met AI-functionaliteit.",
+          "url": "https://www.recruitmenttech.nl/ats-systemen-nederland-2025/",
+          "category": "Recruitment Technology",
+          "source": "RecruitmentTech.nl",
+          "sourceUrl": "https://www.recruitmenttech.nl",
+          "publishDate": "2025-09-28T17:20:46.653Z",
+          "language": "nl",
+          "country": "Nederland"
+        }
+      ],
+      "count": 1
+    },
+    {
+      "title": "Toekomst van Werk",
+      "articles": [
+        {
+          "title": "Hybride werken blijft norm in Nederlandse arbeidsmarkt",
+          "description": "Onderzoek wijst uit dat hybride werken definitief de nieuwe standaard is geworden voor Nederlandse kenniswerkers.",
+          "url": "https://www.pwnet.nl/hybride-werken-nederlandse-arbeidsmarkt-2025/",
+          "category": "Toekomst van Werk",
+          "source": "Personnel & Winst (P&W)",
+          "sourceUrl": "https://www.pwnet.nl",
+          "publishDate": "2025-09-28T17:20:46.653Z",
+          "language": "nl",
+          "country": "Nederland"
+        }
+      ],
+      "count": 1
+    },
+    {
+      "title": "HR & Wetgeving",
+      "articles": [
+        {
+          "title": "HR-wetgeving 2025: belangrijke wijzigingen voor Nederlandse werkgevers",
+          "description": "Overzicht van de belangrijkste wetswijzigingen die in 2025 van kracht worden voor Nederlandse HR-afdelingen.",
+          "url": "https://www.pwnet.nl/hr-wetgeving-wijzigingen-2025/",
+          "category": "HR & Wetgeving",
+          "source": "Personnel & Winst (P&W)",
+          "sourceUrl": "https://www.pwnet.nl",
+          "publishDate": "2025-09-28T17:20:46.653Z",
+          "language": "nl",
+          "country": "Nederland"
+        }
+      ],
+      "count": 1
+    },
+    {
+      "title": "D&I",
+      "articles": [
+        {
+          "title": "Diversiteit & Inclusie: Nederlandse bedrijven maken progressie",
+          "description": "Nieuwe benchmark toont aan dat Nederlandse organisaties stappen maken in diversiteit en inclusie beleid.",
+          "url": "https://www.hrkrant.nl/diversiteit-inclusie-nederlandse-bedrijven-2025/",
+          "category": "D&I",
+          "source": "HRkrant",
+          "sourceUrl": "https://www.hrkrant.nl",
+          "publishDate": "2025-09-28T17:20:46.653Z",
+          "language": "nl",
+          "country": "Nederland"
+        }
+      ],
+      "count": 1
+    }
+  ],
+  "sources": [
+    {
+      "name": "Werf&",
+      "url": "https://www.werf-en.nl",
+      "rss": "https://www.werf-en.nl/feed/",
+      "category": "recruitment_nieuws_nederland",
+      "active": true
+    },
+    {
+      "name": "Intelligence Group",
+      "url": "https://www.intelligence-group.nl",
+      "rss": "https://www.intelligence-group.nl/feed/",
+      "category": "arbeidsmarkt_research_nl",
+      "active": true
+    },
+    {
+      "name": "Recruiters Connected",
+      "url": "https://www.recruitersconnected.nl",
+      "category": "recruitment_community_nl",
+      "active": true
+    },
+    {
+      "name": "Recruiters United",
+      "url": "https://www.recruitersunited.com",
+      "category": "recruitment_community_nl",
+      "active": true
+    },
+    {
+      "name": "RecruitmentTech.nl",
+      "url": "https://www.recruitmenttech.nl",
+      "rss": "https://www.recruitmenttech.nl/feed/",
+      "category": "recruitment_tech_nederland",
+      "active": true
+    },
+    {
+      "name": "Personnel & Winst (P&W)",
+      "url": "https://www.pwnet.nl",
+      "rss": "https://www.pwnet.nl/feed/",
+      "category": "hr_nieuws_nederland",
+      "active": true
+    },
+    {
+      "name": "HRkrant",
+      "url": "https://www.hrkrant.nl",
+      "rss": "https://www.hrkrant.nl/feed/",
+      "category": "hr_nieuws_nederland",
+      "active": true
+    },
+    {
+      "name": "Recruitment Matters",
+      "url": "https://www.recruitmentmatters.nl",
+      "category": "recruitment_nieuws_nederland",
+      "active": true
+    }
+  ],
+  "generatedAt": "2025-09-28T17:20:46.654Z",
+  "insights": [
+    "4 artikelen over AI en technologie in Nederlandse recruitment",
+    "Nederlandse arbeidsmarkt krapte prominent in 3 artikelen",
+    "1 artikelen over salarissen en arbeidsvoorwaarden",
+    "'AI & Technologie' is meest actieve categorie met 2 artikelen",
+    "100% Nederlandse recruitment bronnen voor lokale marktinzichten",
+    "Dekking van 8 belangrijke NL recruitment platforms"
+  ]
+}

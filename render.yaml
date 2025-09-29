@@ -1,0 +1,18 @@
+# Render.com Deployment Configuration
+services:
+  - type: web
+    name: dutch-recruitment-webhooks
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /status
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: WEBHOOK_SECRET
+        generateValue: true
+    domains:
+      - dutch-recruitment-webhooks.onrender.com

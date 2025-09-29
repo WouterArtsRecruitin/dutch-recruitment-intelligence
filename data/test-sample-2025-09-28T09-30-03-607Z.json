@@ -1,0 +1,15 @@
+{
+  "app": "test",
+  "type": "sample",
+  "timestamp": "2025-09-28T09:30:03.608Z",
+  "data": [
+    {
+      "message": "Hello World"
+    }
+  ],
+  "metadata": {
+    "version": "1.0",
+    "count": 1,
+    "size": 25
+  }
+}

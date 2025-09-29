@@ -1,0 +1,128 @@
+{
+  "generatedAt": "2025-09-28T17:36:06.083Z",
+  "weekRange": {
+    "start": "2025-09-28",
+    "end": "2025-09-28"
+  },
+  "analysis": {
+    "totalArticles": 9,
+    "avgScore": 36,
+    "top5Articles": [
+      {
+        "datum": "28-9-2025",
+        "bron": "Werf&",
+        "categorie": "Arbeidsmarkt",
+        "onderwerp": "Tekort aan IT-talent: Nederlandse arbeidsmarkt onder druk",
+        "url": "https://www.werf-en.nl/it-talent-tekort-nederland-2025/",
+        "score": 44,
+        "beschrijving": "Het tekort aan gekwalificeerde IT-professionals in Nederland bereikt recordhoogte in 2025.",
+        "keywords": "arbeidsmarkt, tekort, talent",
+        "gepubliceerd": "28-9-2025"
+      },
+      {
+        "datum": "28-9-2025",
+        "bron": "Intelligence Group",
+        "categorie": "Arbeidsmarktonderzoek",
+        "onderwerp": "Arbeidsmarktmonitor Q3 2025: Krapte in tech sector houdt aan",
+        "url": "https://www.intelligence-group.nl/arbeidsmarktmonitor-q3-2025/",
+        "score": 43,
+        "beschrijving": "Nieuwe cijfers tonen aan dat de krapte op de Nederlandse arbeidsmarkt vooral in de techsector aanhoudende problemen veroorzaakt.",
+        "keywords": "arbeidsmarkt, krapte",
+        "gepubliceerd": "28-9-2025"
+      },
+      {
+        "datum": "28-9-2025",
+        "bron": "Intelligence Group",
+        "categorie": "Salaris & Arbeidsvoorwaarden",
+        "onderwerp": "Salarisonderzoek 2025: IT-professionals verdienen 8% meer",
+        "url": "https://www.intelligence-group.nl/salarisonderzoek-it-2025/",
+        "score": 41,
+        "beschrijving": "Het jaarlijkse salarisonderzoek toont significante stijgingen in de IT-sector, met name voor DevOps en AI-specialisten.",
+        "keywords": "ai, salaris",
+        "gepubliceerd": "28-9-2025"
+      },
+      {
+        "datum": "28-9-2025",
+        "bron": "Werf&",
+        "categorie": "AI & Technologie",
+        "onderwerp": "AI in recruitment: Nederlandse bedrijven lopen voorop in Europa",
+        "url": "https://www.werf-en.nl/ai-recruitment-nederland-europa-2025/",
+        "score": 36,
+        "beschrijving": "Onderzoek toont aan dat Nederlandse recruitment bureaus sneller AI-technologie implementeren dan andere Europese landen.",
+        "keywords": "ai",
+        "gepubliceerd": "28-9-2025"
+      },
+      {
+        "datum": "28-9-2025",
+        "bron": "RecruitmentTech.nl",
+        "categorie": "AI & Technologie",
+        "onderwerp": "ChatGPT in recruitment: praktische toepassingen voor Nederlandse recruiters",
+        "url": "https://www.recruitmenttech.nl/chatgpt-recruitment-nederland/",
+        "score": 36,
+        "beschrijving": "Hoe Nederlandse recruitment professionals ChatGPT en andere AI-tools inzetten voor efficiëntere werving.",
+        "keywords": "ai",
+        "gepubliceerd": "28-9-2025"
+      }
+    ],
+    "topCategories": [
+      [
+        "AI & Technologie",
+        2
+      ],
+      [
+        "Arbeidsmarkt",
+        1
+      ],
+      [
+        "Arbeidsmarktonderzoek",
+        1
+      ]
+    ],
+    "topKeywords": [
+      [
+        "ai",
+        4
+      ],
+      [
+        "arbeidsmarkt",
+        3
+      ],
+      [
+        "tekort",
+        1
+      ],
+      [
+        "talent",
+        1
+      ],
+      [
+        "krapte",
+        1
+      ]
+    ],
+    "topSources": [
+      [
+        "Werf&",
+        2
+      ],
+      [
+        "Intelligence Group",
+        2
+      ],
+      [
+        "RecruitmentTech.nl",
+        2
+      ]
+    ],
+    "weekRange": {
+      "start": "2025-09-28",
+      "end": "2025-09-28"
+    }
+  },
+  "contentTypes": [
+    "weeklyRoundup",
+    "insightPost",
+    "trendAnalysis",
+    "longFormArticle"
+  ]
+}

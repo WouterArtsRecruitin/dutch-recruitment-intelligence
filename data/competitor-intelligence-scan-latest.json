@@ -1,0 +1,71 @@
+{
+  "app": "competitor-intelligence",
+  "type": "scan",
+  "timestamp": "2025-09-28T17:09:50.983Z",
+  "data": {
+    "competitors": [
+      "Time to Hire",
+      "Enhr"
+    ],
+    "focus_areas": [
+      "all"
+    ],
+    "insights": [
+      {
+        "competitor": "Time to Hire",
+        "type": "market_expansion",
+        "priority": "low",
+        "title": "Time to Hire enters Belgian market",
+        "summary": "Competitor development tracked and analyzed",
+        "impact_score": 1,
+        "timestamp": "2025-09-28T17:09:50.983Z"
+      },
+      {
+        "competitor": "Time to Hire",
+        "type": "funding",
+        "priority": "high",
+        "title": "Time to Hire secures €48M Series B funding",
+        "summary": "Competitor development tracked and analyzed",
+        "impact_score": 3,
+        "timestamp": "2025-09-28T17:09:50.983Z"
+      },
+      {
+        "competitor": "Time to Hire",
+        "type": "market_expansion",
+        "priority": "high",
+        "title": "Time to Hire enters German market",
+        "summary": "Competitor development tracked and analyzed",
+        "impact_score": 4,
+        "timestamp": "2025-09-28T17:09:50.983Z"
+      },
+      {
+        "competitor": "Time to Hire",
+        "type": "funding",
+        "priority": "medium",
+        "title": "Time to Hire secures €44M Series B funding",
+        "summary": "Competitor development tracked and analyzed",
+        "impact_score": 1,
+        "timestamp": "2025-09-28T17:09:50.983Z"
+      },
+      {
+        "competitor": "Enhr",
+        "type": "hiring",
+        "priority": "low",
+        "title": "Enhr expanding team with 18 new positions",
+        "summary": "Competitor development tracked and analyzed",
+        "impact_score": 3,
+        "timestamp": "2025-09-28T17:09:50.983Z"
+      },
+      {
+        "competitor": "Enhr",
+        "type": "funding",
+        "priority": "high",
+        "title": "Enhr secures €42M Series B funding",
+        "summary": "Competitor development tracked and analyzed",
+        "impact_score": 1,
+        "timestamp": "2025-09-28T17:09:50.983Z"
+      }
+    ],
+    "summary": "6 developments tracked, 3 high-priority items requiring immediate attention"
+  }
+}

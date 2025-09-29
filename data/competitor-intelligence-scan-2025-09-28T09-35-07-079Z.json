@@ -1,0 +1,127 @@
+{
+  "app": "competitor-intelligence",
+  "type": "scan",
+  "timestamp": "2025-09-28T09:35:07.079Z",
+  "data": {
+    "competitors": [
+      "Time to Hire",
+      "Enhr",
+      "De Selectie",
+      "Procontact"
+    ],
+    "focus_areas": [
+      "all"
+    ],
+    "insights": [
+      {
+        "competitor": "Time to Hire",
+        "type": "market_expansion",
+        "priority": "high",
+        "title": "Time to Hire enters Belgian market",
+        "summary": "Competitor development tracked and analyzed",
+        "impact_score": 5,
+        "timestamp": "2025-09-28T09:35:07.077Z"
+      },
+      {
+        "competitor": "Time to Hire",
+        "type": "hiring",
+        "priority": "high",
+        "title": "Time to Hire expanding team with 30 new positions",
+        "summary": "Competitor development tracked and analyzed",
+        "impact_score": 3,
+        "timestamp": "2025-09-28T09:35:07.079Z"
+      },
+      {
+        "competitor": "Time to Hire",
+        "type": "partnerships",
+        "priority": "medium",
+        "title": "Time to Hire forms strategic partnership with enterprise HR provider",
+        "summary": "Competitor development tracked and analyzed",
+        "impact_score": 4,
+        "timestamp": "2025-09-28T09:35:07.079Z"
+      },
+      {
+        "competitor": "Time to Hire",
+        "type": "partnerships",
+        "priority": "medium",
+        "title": "Time to Hire forms strategic partnership with enterprise HR provider",
+        "summary": "Competitor development tracked and analyzed",
+        "impact_score": 3,
+        "timestamp": "2025-09-28T09:35:07.079Z"
+      },
+      {
+        "competitor": "Enhr",
+        "type": "partnerships",
+        "priority": "medium",
+        "title": "Enhr forms strategic partnership with enterprise HR provider",
+        "summary": "Competitor development tracked and analyzed",
+        "impact_score": 5,
+        "timestamp": "2025-09-28T09:35:07.079Z"
+      },
+      {
+        "competitor": "Enhr",
+        "type": "funding",
+        "priority": "low",
+        "title": "Enhr secures €27M Series B funding",
+        "summary": "Competitor development tracked and analyzed",
+        "impact_score": 4,
+        "timestamp": "2025-09-28T09:35:07.079Z"
+      },
+      {
+        "competitor": "Enhr",
+        "type": "market_expansion",
+        "priority": "medium",
+        "title": "Enhr enters French market",
+        "summary": "Competitor development tracked and analyzed",
+        "impact_score": 4,
+        "timestamp": "2025-09-28T09:35:07.079Z"
+      },
+      {
+        "competitor": "De Selectie",
+        "type": "market_expansion",
+        "priority": "low",
+        "title": "De Selectie enters French market",
+        "summary": "Competitor development tracked and analyzed",
+        "impact_score": 5,
+        "timestamp": "2025-09-28T09:35:07.079Z"
+      },
+      {
+        "competitor": "De Selectie",
+        "type": "product_launches",
+        "priority": "low",
+        "title": "De Selectie launches AI-powered recruitment automation platform",
+        "summary": "Competitor development tracked and analyzed",
+        "impact_score": 4,
+        "timestamp": "2025-09-28T09:35:07.079Z"
+      },
+      {
+        "competitor": "De Selectie",
+        "type": "product_launches",
+        "priority": "low",
+        "title": "De Selectie launches AI-powered recruitment automation platform",
+        "summary": "Competitor development tracked and analyzed",
+        "impact_score": 4,
+        "timestamp": "2025-09-28T09:35:07.079Z"
+      },
+      {
+        "competitor": "Procontact",
+        "type": "product_launches",
+        "priority": "low",
+        "title": "Procontact launches AI-powered recruitment automation platform",
+        "summary": "Competitor development tracked and analyzed",
+        "impact_score": 1,
+        "timestamp": "2025-09-28T09:35:07.079Z"
+      },
+      {
+        "competitor": "Procontact",
+        "type": "partnerships",
+        "priority": "medium",
+        "title": "Procontact forms strategic partnership with enterprise HR provider",
+        "summary": "Competitor development tracked and analyzed",
+        "impact_score": 4,
+        "timestamp": "2025-09-28T09:35:07.079Z"
+      }
+    ],
+    "summary": "12 developments tracked, 2 high-priority items requiring immediate attention"
+  }
+}
