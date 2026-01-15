@@ -1,0 +1,369 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "name": "Dutch Recruitment Intelligence Audit Configuration",
+  "version": "1.0.0",
+  "description": "Configuration for LinkedIn Intelligence Hub & Newsletter Automation audits",
+
+  "audit": {
+    "enabled": true,
+    "schedule": {
+      "daily": "09:30",
+      "weekly": "Sunday 11:00",
+      "timezone": "Europe/Amsterdam"
+    },
+    "notification": {
+      "email": true,
+      "slack": false,
+      "webhook": null
+    }
+  },
+
+  "server": {
+    "production_url": "https://dutch-recruitment-webhooks.onrender.com",
+    "development_url": "http://localhost:3000",
+    "timeout_ms": 10000,
+    "retry_attempts": 3
+  },
+
+  "endpoints": {
+    "daily_news": {
+      "path": "/daily-news-collection",
+      "method": "POST",
+      "expected_status": 200,
+      "description": "Dagelijkse nieuws verzameling van 8 Nederlandse bronnen"
+    },
+    "sheets_upload": {
+      "path": "/upload-to-sheets",
+      "method": "POST",
+      "expected_status": 200,
+      "description": "Upload naar Google Sheets met scoring"
+    },
+    "weekly_content": {
+      "path": "/weekly-content-creation",
+      "method": "POST",
+      "expected_status": 200,
+      "description": "Wekelijkse LinkedIn content generatie"
+    },
+    "top_articles": {
+      "path": "/get-top-articles",
+      "method": "GET",
+      "expected_status": 200,
+      "description": "Top 10 artikelen ophalen"
+    },
+    "reports": {
+      "path": "/reports",
+      "method": "GET",
+      "expected_status": 200,
+      "description": "Live HTML dagrapport"
+    },
+    "status": {
+      "path": "/status",
+      "method": "GET",
+      "expected_status": 200,
+      "description": "Server health check"
+    },
+    "test": {
+      "path": "/test",
+      "method": "GET",
+      "expected_status": 200,
+      "description": "Connection test endpoint"
+    }
+  },
+
+  "files": {
+    "required": [
+      {
+        "path": "zapier-webhook-server.cjs",
+        "description": "Main webhook server",
+        "critical": true
+      },
+      {
+        "path": "linkedin-content-creator.cjs",
+        "description": "LinkedIn content generatie",
+        "critical": true
+      },
+      {
+        "path": "dutch-recruitment-news-scraper.cjs",
+        "description": "Nieuws scraping van 8 bronnen",
+        "critical": true
+      },
+      {
+        "path": "google-sheets-uploader.cjs",
+        "description": "Google Sheets integratie",
+        "critical": true
+      },
+      {
+        "path": "complete-automation-flow.cjs",
+        "description": "Dagelijkse/wekelijkse orchestratie",
+        "critical": false
+      },
+      {
+        "path": "package.json",
+        "description": "NPM configuratie",
+        "critical": true
+      }
+    ],
+    "directories": [
+      {
+        "path": "data",
+        "description": "JSON data opslag",
+        "min_files": 0
+      },
+      {
+        "path": "content",
+        "description": "LinkedIn content output",
+        "min_files": 0
+      },
+      {
+        "path": "reports",
+        "description": "HTML/CSV rapporten",
+        "min_files": 0
+      }
+    ]
+  },
+
+  "data_sources": {
+    "dutch_recruitment_sources": [
+      {
+        "name": "Werf&",
+        "url": "werf-en.nl",
+        "type": "RSS",
+        "category": "recruitment_news"
+      },
+      {
+        "name": "Intelligence Group",
+        "url": "intelligence-group.nl",
+        "type": "RSS",
+        "category": "market_research"
+      },
+      {
+        "name": "RecruitmentTech.nl",
+        "url": "recruitmenttech.nl",
+        "type": "RSS",
+        "category": "tech_trends"
+      },
+      {
+        "name": "Personnel & Winst",
+        "url": "pwnet.nl",
+        "type": "RSS",
+        "category": "hr_news"
+      },
+      {
+        "name": "HRkrant",
+        "url": "hrkrant.nl",
+        "type": "RSS",
+        "category": "hr_news"
+      },
+      {
+        "name": "Recruiters Connected",
+        "url": "recruitersconnected.nl",
+        "type": "Web",
+        "category": "community"
+      },
+      {
+        "name": "Recruiters United",
+        "url": "recruitersunited.com",
+        "type": "Web",
+        "category": "community"
+      },
+      {
+        "name": "Recruitment Matters",
+        "url": "recruitmentmatters.nl",
+        "type": "Web",
+        "category": "news"
+      }
+    ]
+  },
+
+  "linkedin_content": {
+    "types": [
+      {
+        "id": "weeklyRoundup",
+        "name": "Weekly Roundup Post",
+        "description": "Overzicht van top 5 artikelen",
+        "target_words": 250,
+        "platform": "LinkedIn Feed"
+      },
+      {
+        "id": "insightPost",
+        "name": "Insight Post",
+        "description": "Focus op 1 trend met analyse",
+        "target_words": 200,
+        "platform": "LinkedIn Feed"
+      },
+      {
+        "id": "trendAnalysis",
+        "name": "Trend Analysis Post",
+        "description": "Data-driven trend analyse",
+        "target_words": 350,
+        "platform": "LinkedIn Feed"
+      },
+      {
+        "id": "longFormArticle",
+        "name": "Long-form Article",
+        "description": "Uitgebreid artikel voor publicatie",
+        "target_words": 1200,
+        "platform": "LinkedIn Article"
+      }
+    ],
+    "hashtags": {
+      "weeklyRoundup": [
+        "#RecruitmentNL",
+        "#HRTrends",
+        "#TalentAcquisition",
+        "#ArbeidsmarktNL",
+        "#RecruitmentTech"
+      ],
+      "insightPost": [
+        "#RecruitmentInsights",
+        "#HRStrategy",
+        "#TalentTrends",
+        "#NederlandseArbeidsmarkt"
+      ],
+      "trendAnalysis": [
+        "#TrendAnalyse",
+        "#RecruitmentTrends",
+        "#FutureOfWork",
+        "#AIinRecruitment"
+      ],
+      "longFormArticle": [
+        "#RecruitmentNL",
+        "#ThoughtLeadership",
+        "#HRLeadership"
+      ]
+    }
+  },
+
+  "scoring": {
+    "keywords": {
+      "ai": 10,
+      "automation": 8,
+      "arbeidsmarkt": 9,
+      "tekort": 9,
+      "salaris": 7,
+      "remote": 6,
+      "diversiteit": 5,
+      "recruitment": 5,
+      "technology": 8
+    },
+    "sources": {
+      "Intelligence Group": 9,
+      "Werf&": 8,
+      "RecruitmentTech.nl": 8,
+      "Personnel & Winst": 7,
+      "HRkrant": 6,
+      "Recruiters Connected": 5,
+      "Recruiters United": 5,
+      "Recruitment Matters": 6
+    },
+    "categories": {
+      "AI & Technologie": 10,
+      "Arbeidsmarktonderzoek": 9,
+      "Recruitment Tech": 8,
+      "Salaris & Arbeidsvoorwaarden": 7,
+      "Remote & Hybride Werk": 6,
+      "Diversiteit & Inclusie": 5
+    },
+    "bonuses": {
+      "content_length_100_chars": 3,
+      "today_article": 5,
+      "max_score": 100
+    }
+  },
+
+  "security": {
+    "patterns_to_check": [
+      {
+        "pattern": "(api_key|apikey)\\s*[=:]\\s*[\"'][^\"']{10,}[\"']",
+        "severity": "high",
+        "description": "Hardcoded API key"
+      },
+      {
+        "pattern": "(secret|password)\\s*[=:]\\s*[\"'][^\"']{8,}[\"']",
+        "severity": "high",
+        "description": "Hardcoded secret/password"
+      },
+      {
+        "pattern": "eval\\s*\\(",
+        "severity": "medium",
+        "description": "Unsafe eval() usage"
+      },
+      {
+        "pattern": "innerHTML\\s*=",
+        "severity": "medium",
+        "description": "Potential XSS via innerHTML"
+      }
+    ],
+    "required_env_vars": [
+      "WEBHOOK_SECRET",
+      "NODE_ENV"
+    ],
+    "recommended_env_vars": [
+      "ZAPIER_API_KEY",
+      "GOOGLE_SHEET_ID"
+    ]
+  },
+
+  "automation_flow": {
+    "daily": {
+      "schedule": "09:00 Europe/Amsterdam",
+      "steps": [
+        {
+          "order": 1,
+          "name": "News Collection",
+          "endpoint": "/daily-news-collection",
+          "description": "Scrape 8 Dutch recruitment sources"
+        },
+        {
+          "order": 2,
+          "name": "Sheets Upload",
+          "endpoint": "/upload-to-sheets",
+          "description": "Score and upload to Google Sheets"
+        },
+        {
+          "order": 3,
+          "name": "HTML Report",
+          "endpoint": "/reports",
+          "description": "Generate daily HTML report"
+        }
+      ]
+    },
+    "weekly": {
+      "schedule": "Sunday 10:00 Europe/Amsterdam",
+      "steps": [
+        {
+          "order": 1,
+          "name": "Content Creation",
+          "endpoint": "/weekly-content-creation",
+          "description": "Generate 4 LinkedIn content formats"
+        },
+        {
+          "order": 2,
+          "name": "Manual Review",
+          "type": "manual",
+          "description": "Review generated content"
+        },
+        {
+          "order": 3,
+          "name": "LinkedIn Posting",
+          "type": "manual",
+          "description": "Manually post to LinkedIn"
+        }
+      ]
+    }
+  },
+
+  "reporting": {
+    "output_formats": ["json", "md", "html"],
+    "retention_days": 30,
+    "output_directory": "audit-reports"
+  },
+
+  "thresholds": {
+    "min_articles_per_day": 5,
+    "min_average_score": 60,
+    "min_weekly_data_days": 3,
+    "max_endpoint_response_ms": 5000,
+    "min_content_word_count": 100
+  }
+}

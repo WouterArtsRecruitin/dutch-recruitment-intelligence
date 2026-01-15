@@ -1,0 +1,416 @@
+name: LinkedIn Automation Audit
+
+on:
+  # Scheduled audits
+  schedule:
+    # Daily audit at 10:00 UTC (11:00 Amsterdam)
+    - cron: '0 10 * * *'
+    # Weekly comprehensive audit on Sunday at 12:00 UTC
+    - cron: '0 12 * * 0'
+
+  # Manual trigger
+  workflow_dispatch:
+    inputs:
+      audit_type:
+        description: 'Type of audit to run'
+        required: true
+        default: 'full'
+        type: choice
+        options:
+          - full
+          - endpoints
+          - content
+          - security
+          - data
+      server_url:
+        description: 'Server URL to audit'
+        required: false
+        default: 'https://dutch-recruitment-webhooks.onrender.com'
+
+  # Trigger on push to main branches
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - '*.cjs'
+      - 'package.json'
+      - 'audit-suite.sh'
+      - 'python_audits.py'
+
+  # Trigger on PRs
+  pull_request:
+    branches:
+      - main
+      - master
+    paths:
+      - '*.cjs'
+      - 'package.json'
+
+env:
+  NODE_VERSION: '18'
+  PYTHON_VERSION: '3.11'
+  WEBHOOK_BASE_URL: ${{ github.event.inputs.server_url || 'https://dutch-recruitment-webhooks.onrender.com' }}
+
+jobs:
+  # Quick health check - runs on every trigger
+  health-check:
+    name: Server Health Check
+    runs-on: ubuntu-latest
+    outputs:
+      server_status: ${{ steps.health.outputs.status }}
+
+    steps:
+      - name: Check server status
+        id: health
+        run: |
+          echo "Checking server health at $WEBHOOK_BASE_URL..."
+          status_code=$(curl -s -o /dev/null -w "%{http_code}" "$WEBHOOK_BASE_URL/status" || echo "000")
+          echo "Status code: $status_code"
+
+          if [ "$status_code" == "200" ]; then
+            echo "status=healthy" >> $GITHUB_OUTPUT
+            echo "✅ Server is healthy"
+          else
+            echo "status=unhealthy" >> $GITHUB_OUTPUT
+            echo "⚠️ Server returned HTTP $status_code"
+          fi
+
+      - name: Test critical endpoints
+        if: steps.health.outputs.status == 'healthy'
+        run: |
+          echo "Testing critical endpoints..."
+
+          endpoints=("/test" "/status" "/reports")
+          for endpoint in "${endpoints[@]}"; do
+            status=$(curl -s -o /dev/null -w "%{http_code}" "$WEBHOOK_BASE_URL$endpoint")
+            echo "$endpoint: HTTP $status"
+          done
+
+  # Full Python audit
+  python-audit:
+    name: Python Audit Suite
+    runs-on: ubuntu-latest
+    needs: health-check
+    if: |
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && github.ref == 'refs/heads/main')
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Run Python audit
+        run: |
+          audit_type="${{ github.event.inputs.audit_type || 'full' }}"
+          echo "Running $audit_type audit..."
+
+          python python_audits.py $audit_type --output all
+
+      - name: Upload audit reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-audit-reports
+          path: audit-reports/
+          retention-days: 30
+
+  # Bash audit suite
+  bash-audit:
+    name: Bash Audit Suite
+    runs-on: ubuntu-latest
+    needs: health-check
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Make audit script executable
+        run: chmod +x audit-suite.sh
+
+      - name: Run bash audit
+        run: |
+          echo "Running bash audit suite..."
+          ./audit-suite.sh full
+
+      - name: Upload audit reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: bash-audit-reports
+          path: audit-reports/
+          retention-days: 30
+
+  # Security scan
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check for secrets in code
+        run: |
+          echo "Scanning for hardcoded secrets..."
+
+          # Check for potential secrets
+          patterns=(
+            "api_key.*=.*['\"][^'\"]{10,}['\"]"
+            "secret.*=.*['\"][^'\"]{8,}['\"]"
+            "password.*=.*['\"][^'\"]{8,}['\"]"
+          )
+
+          issues_found=0
+          for pattern in "${patterns[@]}"; do
+            if grep -rEi "$pattern" *.cjs 2>/dev/null | grep -v "example\|sample\|test" | grep -v "recruitment_intelligence"; then
+              echo "⚠️ Potential secret found matching pattern: $pattern"
+              issues_found=$((issues_found + 1))
+            fi
+          done
+
+          if [ $issues_found -eq 0 ]; then
+            echo "✅ No obvious hardcoded secrets found"
+          else
+            echo "::warning::Found $issues_found potential security issues"
+          fi
+
+      - name: Check .env handling
+        run: |
+          echo "Checking .env security..."
+
+          if [ -f ".gitignore" ]; then
+            if grep -q "\.env" .gitignore; then
+              echo "✅ .env is in .gitignore"
+            else
+              echo "::warning::.env is NOT in .gitignore - security risk!"
+            fi
+          else
+            echo "::warning::.gitignore file not found"
+          fi
+
+      - name: Check CORS configuration
+        run: |
+          echo "Checking CORS settings..."
+
+          if grep -q "Access-Control-Allow-Origin', '\*'" zapier-webhook-server.cjs; then
+            echo "::warning::CORS allows all origins (*) - consider restricting in production"
+          else
+            echo "✅ CORS is restricted"
+          fi
+
+  # Content audit
+  content-audit:
+    name: LinkedIn Content Audit
+    runs-on: ubuntu-latest
+    needs: health-check
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check content directory
+        run: |
+          echo "Auditing LinkedIn content..."
+
+          if [ -d "content" ]; then
+            echo "Content directory exists"
+
+            # Count content types
+            for type in weeklyRoundup insightPost trendAnalysis longFormArticle; do
+              count=$(ls -1 content/*-${type}.md 2>/dev/null | wc -l)
+              echo "$type: $count files"
+            done
+
+            # Check latest content
+            latest=$(ls -t content/*.md 2>/dev/null | head -1)
+            if [ -n "$latest" ]; then
+              word_count=$(wc -w < "$latest")
+              echo "Latest: $latest ($word_count words)"
+            fi
+          else
+            echo "::warning::Content directory not found"
+          fi
+
+      - name: Check content templates
+        run: |
+          echo "Checking content templates in linkedin-content-creator.cjs..."
+
+          templates=("weeklyRoundup" "insightPost" "trendAnalysis" "article")
+          for template in "${templates[@]}"; do
+            if grep -q "$template" linkedin-content-creator.cjs; then
+              echo "✅ Template: $template configured"
+            else
+              echo "::warning::Template: $template not found"
+            fi
+          done
+
+  # Endpoint testing
+  endpoint-test:
+    name: Endpoint Testing
+    runs-on: ubuntu-latest
+    needs: health-check
+    if: needs.health-check.outputs.server_status == 'healthy'
+
+    steps:
+      - name: Test GET endpoints
+        run: |
+          echo "Testing GET endpoints..."
+
+          endpoints=("/status" "/test" "/reports" "/get-top-articles")
+
+          for endpoint in "${endpoints[@]}"; do
+            echo "Testing GET $endpoint..."
+            response=$(curl -s -w "\nHTTP_CODE:%{http_code}" "$WEBHOOK_BASE_URL$endpoint")
+            http_code=$(echo "$response" | grep "HTTP_CODE:" | cut -d: -f2)
+
+            if [ "$http_code" == "200" ]; then
+              echo "✅ GET $endpoint: HTTP $http_code"
+            else
+              echo "::warning::GET $endpoint returned HTTP $http_code"
+            fi
+          done
+
+      - name: Test POST endpoints
+        run: |
+          echo "Testing POST endpoints..."
+
+          endpoints=("/daily-news-collection" "/upload-to-sheets" "/weekly-content-creation")
+
+          for endpoint in "${endpoints[@]}"; do
+            echo "Testing POST $endpoint..."
+            response=$(curl -s -w "\nHTTP_CODE:%{http_code}" -X POST "$WEBHOOK_BASE_URL$endpoint" -H "Content-Type: application/json" -d '{}')
+            http_code=$(echo "$response" | grep "HTTP_CODE:" | cut -d: -f2)
+
+            if [ "$http_code" == "200" ]; then
+              echo "✅ POST $endpoint: HTTP $http_code"
+            else
+              echo "::warning::POST $endpoint returned HTTP $http_code"
+            fi
+          done
+
+      - name: Test response times
+        run: |
+          echo "Testing endpoint response times..."
+
+          endpoints=("/status" "/test" "/reports")
+          max_time=5
+
+          for endpoint in "${endpoints[@]}"; do
+            time_total=$(curl -s -o /dev/null -w "%{time_total}" "$WEBHOOK_BASE_URL$endpoint")
+            time_ms=$(echo "$time_total * 1000" | bc)
+
+            if (( $(echo "$time_total < $max_time" | bc -l) )); then
+              echo "✅ $endpoint: ${time_ms}ms"
+            else
+              echo "::warning::$endpoint slow response: ${time_ms}ms (> ${max_time}s)"
+            fi
+          done
+
+  # Weekly comprehensive report
+  weekly-report:
+    name: Weekly Comprehensive Report
+    runs-on: ubuntu-latest
+    needs: [python-audit, bash-audit, security-scan, content-audit, endpoint-test]
+    if: |
+      always() &&
+      (github.event.schedule == '0 12 * * 0' || github.event_name == 'workflow_dispatch')
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: all-reports/
+
+      - name: Generate weekly summary
+        run: |
+          echo "# Weekly Audit Summary" > weekly-summary.md
+          echo "" >> weekly-summary.md
+          echo "**Date:** $(date '+%Y-%m-%d %H:%M:%S')" >> weekly-summary.md
+          echo "**Server:** $WEBHOOK_BASE_URL" >> weekly-summary.md
+          echo "" >> weekly-summary.md
+          echo "## Job Results" >> weekly-summary.md
+          echo "" >> weekly-summary.md
+          echo "| Job | Status |" >> weekly-summary.md
+          echo "|-----|--------|" >> weekly-summary.md
+          echo "| Python Audit | ${{ needs.python-audit.result }} |" >> weekly-summary.md
+          echo "| Bash Audit | ${{ needs.bash-audit.result }} |" >> weekly-summary.md
+          echo "| Security Scan | ${{ needs.security-scan.result }} |" >> weekly-summary.md
+          echo "| Content Audit | ${{ needs.content-audit.result }} |" >> weekly-summary.md
+          echo "| Endpoint Test | ${{ needs.endpoint-test.result }} |" >> weekly-summary.md
+          echo "" >> weekly-summary.md
+          echo "## LinkedIn Automation Flow Status" >> weekly-summary.md
+          echo "" >> weekly-summary.md
+          echo "### Daily Flow (09:00 Amsterdam)" >> weekly-summary.md
+          echo "1. \`/daily-news-collection\` - Scrape 8 Dutch sources" >> weekly-summary.md
+          echo "2. \`/upload-to-sheets\` - Score and upload" >> weekly-summary.md
+          echo "3. HTML report generation" >> weekly-summary.md
+          echo "" >> weekly-summary.md
+          echo "### Weekly Flow (Sunday 10:00)" >> weekly-summary.md
+          echo "1. \`/weekly-content-creation\` - Generate LinkedIn content" >> weekly-summary.md
+          echo "2. Manual review and posting" >> weekly-summary.md
+          echo "" >> weekly-summary.md
+
+          cat weekly-summary.md
+
+      - name: Upload weekly summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: weekly-summary
+          path: weekly-summary.md
+          retention-days: 90
+
+  # Notification job
+  notify:
+    name: Send Notifications
+    runs-on: ubuntu-latest
+    needs: [health-check, python-audit, bash-audit, security-scan]
+    if: always() && (failure() || github.event.schedule == '0 12 * * 0')
+
+    steps:
+      - name: Prepare notification
+        run: |
+          if [ "${{ needs.health-check.outputs.server_status }}" != "healthy" ]; then
+            echo "::error::Server health check failed!"
+          fi
+
+          if [ "${{ needs.security-scan.result }}" == "failure" ]; then
+            echo "::error::Security scan found issues!"
+          fi
+
+          echo "Audit completed. Check workflow logs for details."
+
+      - name: Create issue on failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = `🔴 Audit Failed - ${new Date().toISOString().split('T')[0]}`;
+            const body = `
+            ## Audit Failure Report
+
+            **Workflow Run:** [${context.runId}](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})
+
+            ### Job Results
+            - Health Check: ${{ needs.health-check.result }}
+            - Python Audit: ${{ needs.python-audit.result }}
+            - Bash Audit: ${{ needs.bash-audit.result }}
+            - Security Scan: ${{ needs.security-scan.result }}
+
+            Please review the workflow logs for details.
+            `;
+
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: title,
+              body: body,
+              labels: ['audit', 'automated']
+            });
